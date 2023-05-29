@@ -7,10 +7,23 @@ import { Genre } from "./hooks/useGenres"
 import PlatformSelector from "./components/PlatformSelector"
 import { Platform } from "./hooks/useGames"
 
+
+export interface GameQuery {
+  genre: Genre | null;
+  platform: Platform | null
+}
+
 function App() {
 
-  const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null) // using this to share the state,value will be passed as which genre is selected
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null) //
+  // Now removing the below states to create a dynamic State using interface
+
+  // const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null) // using this to share the state,value will be passed as which genre is selected
+  // const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(null) //
+
+  // Adding this state in place of the above 2
+
+  const [gameQuery, SetGameQuery] = useState<GameQuery>({} as GameQuery)
+
   return (
     <Grid templateAreas={{
       base: `"nav" "main"`,
@@ -25,11 +38,11 @@ function App() {
         <NavBar></NavBar>
       </GridItem>
       <Show above="lg">
-        <GridItem area="aside" paddingX={5}><GenreList selectedGenre={selectedGenre} onSelectGenre={(genre) => setSelectedGenre(genre)}></GenreList></GridItem>
+        <GridItem area="aside" paddingX={5}><GenreList selectedGenre={gameQuery.genre} onSelectGenre={(genre) => SetGameQuery({ ...gameQuery, genre })}></GenreList></GridItem>
       </Show>
       <GridItem area="main">
-        <PlatformSelector selectedPlatform={selectedPlatform} onSelectPlatform={(platform) => setSelectedPlatform(platform)}></PlatformSelector>
-        <GameGrid selectedGenre={selectedGenre} selectedPlatform={selectedPlatform}></GameGrid>
+        <PlatformSelector selectedPlatform={gameQuery.platform} onSelectPlatform={(platform) => SetGameQuery({ ...gameQuery, platform })}></PlatformSelector>
+        <GameGrid gameQuery={gameQuery}></GameGrid>
       </GridItem>
     </Grid>
   )

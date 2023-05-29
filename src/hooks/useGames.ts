@@ -5,6 +5,7 @@ import apiClient from "../services/api-client";
 import { CanceledError } from "axios";
 import useData from "./useData";
 import { Genre } from "./useGenres";
+import { GameQuery } from "../App";
 
 export interface Platform {
     id: number;
@@ -19,10 +20,21 @@ export interface Game {
     metacritic: number
 }
 
-const useGames = (selectedGenre: Genre | null, selectedPlatform: Platform | null) =>
+
+// const useGames = (selectedGenre: Genre | null, selectedPlatform: Platform | null) =>
+//     useData<Game>("/games", {
+//         params: { genres: selectedGenre?.id, platforms: selectedPlatform?.id }
+//     }, [selectedGenre?.id, selectedPlatform?.id])
+
+
+/*               ***Before we used the above useGames function using 2 different params   */
+/**      Now using the below one */
+
+const useGames = (gameQuery: GameQuery) =>
     useData<Game>("/games", {
-        params: { genres: selectedGenre?.id, platforms: selectedPlatform?.id }
-    }, [selectedGenre?.id, selectedPlatform?.id])
+        params: { genres: gameQuery.genre?.id, platforms: gameQuery.platform?.id }
+    }, [gameQuery])
+
 
 export default useGames
 
