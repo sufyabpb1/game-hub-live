@@ -9,6 +9,10 @@ interface Props {
     selectedPlatform: Platform | null
 }
 
+const activeMenuItem: any = {
+    backgroundColor: 'grey'
+}
+
 const PlatformSelector = ({ onSelectPlatform, selectedPlatform }: Props) => {
 
     const { data, error } = usePlatform()
@@ -17,7 +21,17 @@ const PlatformSelector = ({ onSelectPlatform, selectedPlatform }: Props) => {
         <Menu>
             <MenuButton as={Button} rightIcon={<BsChevronDown />}> {selectedPlatform?.name || "Platforms"}</MenuButton>
             <MenuList>
-                {data.map((platform) => <MenuItem onClick={() => onSelectPlatform(platform)} key={platform.id}>{platform.name}</MenuItem>)}
+                {/* {data.map((platform) => <MenuItem onClick={() => onSelectPlatform(platform)} key={platform.id}>{platform.name}</MenuItem>)} */}
+                {data.map((platform) => (
+                    <MenuItem
+                        onClick={() => onSelectPlatform(platform)}
+                        key={platform.id}
+                        style={selectedPlatform?.id === platform.id ? activeMenuItem : {}}
+                    >
+                        {platform.name}
+                    </MenuItem>
+                ))}
+
             </MenuList>
         </Menu>
     )
